@@ -13,6 +13,7 @@
 - `node --test test/*.test.mjs` passed 93 tests with zero failures. The suite includes real local HTTP plus in-memory SQLite integration and disk-backed lock/reopen tests. All Notion network tests use injected offline transports; no real page was created.
 - Direct Node execution works in the non-ASCII project directory. The host's npm child shell cannot currently resolve Node; no global environment settings were changed. The README documents direct commands.
 - The same 93 tests passed with `TZ=America/New_York`, independently of the host's Beijing timezone. An offline Windows/Linux CI matrix was prepared but has not yet run remotely.
+- Publication review also treats an HTTP 408 response as an uncertain transfer, preserving the manual verification requirement rather than permitting a potentially duplicated create.
 - A hidden in-app browser verified the local page without taking over the author's desktop: import six fictional messages, inspect source evidence, edit the report title (revision 1 to 2), approve revision 2, preview the matching Notion payload and open the handoff view. A screenshot was saved locally under ignored `artifacts/private/`; no private account data was involved. No live Notion write was attempted.
 
 Pending verification: broader browser/device acceptance, live Notion delivery, GitHub publication and remote CI, actual demo video, Devpost registration, credit form submission and identity verification. Do not describe these as completed until evidence is added.

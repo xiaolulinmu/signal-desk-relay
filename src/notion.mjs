@@ -176,7 +176,7 @@ export async function sendToNotion(payload, config, { fetchImpl = fetch } = {}) 
     }
     if (!response?.ok) {
       const status = Number.isInteger(response?.status) ? response.status : 0;
-      const uncertain = status === 0 || status >= 500 || (status >= 200 && status < 400);
+      const uncertain = status === 0 || status === 408 || status >= 500 || (status >= 200 && status < 400);
       throw transferError(`Notion request failed${status ? ` (HTTP ${status})` : ''}.${uncertain ? ' Verify the remote result before another transfer.' : ''}`, uncertain);
     }
     let page;

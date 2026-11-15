@@ -111,14 +111,14 @@ test('network/timeout failures are uncertain and do not expose provider errors o
   }
 });
 
-test('5xx is uncertain, 4xx is a rejected attempt, response bodies are not logged or retried', async () => {
-  for (const status of [400, 401, 403, 409, 429, 500, 503]) {
+test('server and HTTP timeout failures are uncertain; explicit rejections do not read bodies or retry', async () => {
+  for (const status of [400, 401, 403, 408, 409, 429, 500, 503]) {
     let calls = 0;
     await assert.rejects(sendToNotion(buildNotionPayload(draft, message, config), config, { fetchImpl: async () => {
       calls++;
       return { ok: false, status, json: () => { throw new Error('Response body must not be read.'); } };
     } }), error => {
-      assert.equal(error.uncertain, status >= 500);
+      assert.equal(error.uncertain, status === 408 || status >= 500);
       assert.match(error.message, new RegExp(`HTTP ${status}`));
       assert.equal(error.message.includes(config.token), false);
       return true;
