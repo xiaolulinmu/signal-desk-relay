@@ -8,7 +8,9 @@ Name: Signal Desk Relay
 
 Category: Frankenstein
 
-Description (use only after confirming the new-project plan and actual Kiro work):
+Public source: https://github.com/xiaolulinmu/signal-desk-relay
+
+Description (new-project plan approved and initial Kiro development independently verified):
 
 > Frankenstein: I am building Signal Desk Relay, a new local application that stitches together imported group notices, transparent classification proposals, evidence-first human review, and explicitly approved Notion handoffs. It began on November 15, 2026 and is inspired by the workflow of my older private assistant; no legacy source, private chat data, or collector components are included. I am using Kiro specs and steering to implement and test the classification and Beijing-time date parser, while preserving explicit approval before a remote write.
 
@@ -17,7 +19,7 @@ Description (use only after confirming the new-project plan and actual Kiro work
 - Devpost first and last name must match government ID exactly; do not infer these from a directory or a nickname.
 - Devpost email and public profile URL, registration confirmation and country of residence.
 - Kiro User ID copied from the intended signed-in account, not the email or a guessed identifier.
-- A public GitHub URL after publication and verification (the credit request form itself currently has no GitHub URL field).
+- Public GitHub URL is verified above (the credit request form itself currently has no GitHub URL field).
 
 The author must personally complete ID/selfie verification through the organizer's actual email workflow. No ID image, selfie, token, redemption link or private identifier belongs in this repository.
 

@@ -5,7 +5,7 @@
 - [x] Codex: implement original responsive review interface and entirely synthetic example messages.
 - [x] Codex: independently review and correct Kiro output; pass 93 offline tests including HTTP/SQLite flow and exclusive data-directory access.
 - [x] Codex: verify the local import/edit/approve/preview path in a hidden browser without using the author's desktop windows.
-- [ ] Codex: complete privacy/publication checks and verify public GitHub repository.
+- [x] Codex: complete privacy/publication checks and verify public GitHub repository plus all four CI matrix jobs.
 - [ ] Author and Codex: complete broader UI acceptance and prepare an actual public demo recording.
 - [ ] Author: register, confirm accurate legal profile, apply for credits and personally complete identity verification.
 
