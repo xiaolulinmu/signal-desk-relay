@@ -1,0 +1,16 @@
+node_modules/
+.env
+.env.*
+!.env.example
+.data/
+*.sqlite
+*.sqlite3
+*.sqlite-shm
+*.sqlite-wal
+*.sqlite3-shm
+*.sqlite3-wal
+*.log
+coverage/
+artifacts/private/
+.DS_Store
+Thumbs.db

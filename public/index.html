@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="color-scheme" content="dark">
+  <title>Signal Desk Relay · 消息确认与交接</title>
+  <link rel="stylesheet" href="/style.css">
+  <script src="/app.js" defer></script>
+</head>
+<body>
+  <div class="ambient ambient-one" aria-hidden="true"></div><div class="ambient ambient-two" aria-hidden="true"></div>
+  <div class="shell">
+    <header class="topbar">
+      <a href="#inbox" class="brand" aria-label="Signal Desk Relay 首页"><span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i></span><span>Signal Desk <b>Relay</b><small>FROM SIGNAL TO INTENTION</small></span></a>
+      <div class="top-controls"><span class="local-pill"><i></i> 本地运行</span><button id="sound-toggle" class="quiet-button" aria-pressed="false">音效关闭</button><button id="import-open" class="button button-small">＋ 导入消息</button></div>
+    </header>
+    <main>
+      <section class="hero" aria-labelledby="page-title">
+        <div><p class="eyebrow">YOUR ATTENTION, PROTECTED.</p><h1 id="page-title">重要消息，逐项确认。</h1><p class="hero-copy">找到来源，核对内容，把你确认的事项交给 Notion。</p></div>
+        <div class="hero-orbit" aria-hidden="true"><span class="orbit orbit-a"></span><span class="orbit orbit-b"></span><span class="orbit orbit-c"></span><span class="orbit-core">S</span><span class="orbit-caption">NOTHING IMPORTANT<br>LEFT IN THE SHADOWS</span></div>
+        <div class="clock"><span id="clock-date">—</span><small id="clock-time">北京时间 · Asia/Shanghai</small></div>
+      </section>
+      <section class="stats" aria-label="处理概览">
+        <div class="stat stat-priority"><span>待你确认</span><strong id="count-review">00</strong><small>核对后才会进入交接</small></div>
+        <div class="stat"><span>已确认事项</span><strong id="count-approved">00</strong><small>保留你确认的准确版本</small></div>
+        <div class="stat"><span>已交接 Notion</span><strong id="count-synced">00</strong><small id="notion-state">正在检查连接状态</small></div>
+        <div class="stat stat-subtle"><span>消息证据</span><strong id="count-messages">00</strong><small>每个事项都有原文可查</small></div>
+      </section>
+      <section class="workspace" aria-label="消息处理工作台">
+        <div class="workspace-top">
+          <nav class="tabs" aria-label="工作台视图"><button class="tab active" data-view="inbox" aria-current="page">收件箱 <span id="tab-inbox-count">0</span></button><button class="tab" data-view="review">核对事项</button><button class="tab" data-view="handoff">交接记录</button></nav>
+          <div class="workspace-tools"><label class="search-label"><span aria-hidden="true">⌕</span><input id="search" type="search" placeholder="搜索内容、来源或发送人" aria-label="搜索消息与事项"></label><button id="refresh" class="icon-button" title="刷新" aria-label="刷新数据">↻</button></div>
+        </div>
+        <div class="workspace-note"><span class="note-dot"></span><span id="view-note">本地规则生成分类建议。内容与日期需要你逐项核对。</span><span class="sample-label" id="sample-label" hidden>虚构演示数据</span></div>
+        <div class="workgrid">
+          <section class="inbox-column" aria-label="消息与事项列表"><div class="list-heading"><h2 id="list-title">消息收件箱</h2><label class="filter-label"><span class="sr-only">筛选类别</span><select id="category-filter"><option value="all">全部类别</option><option value="mandatory_event">必须参加</option><option value="mandatory_task">必须完成</option><option value="change_or_cancel">变更 / 取消</option><option value="optional_recruitment">自愿报名</option><option value="useful_info">参考信息</option><option value="noise">普通消息</option></select></label></div><div id="item-list" class="item-list" aria-live="polite"></div></section>
+          <section class="detail-column" id="detail" aria-label="核对详情" tabindex="-1"></section>
+        </div>
+      </section>
+      <footer><span><i class="footer-light"></i> 本地收集 · 人工确认 · 明确交接</span><span>规则建议始终需要确认 · 不自动读取聊天软件</span><button id="demo-load" class="text-button">体验虚构示例 ↗</button></footer>
+    </main>
+  </div>
+  <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
+  <dialog id="import-dialog" aria-labelledby="import-title"><form id="import-form"><div class="dialog-heading"><div><p class="eyebrow">BRING YOUR OWN MESSAGES</p><h2 id="import-title">导入消息</h2></div><button type="button" class="icon-button dialog-close" aria-label="关闭导入窗口">×</button></div><p class="muted">选择你主动导出的 JSON 文件，或粘贴消息数组。导入仅在本机处理；普通消息超过 30 天会被拒绝。</p><label class="file-picker">选择 JSON 文件<input type="file" id="import-file" accept=".json,application/json"></label><label class="field-label" for="import-json">消息 JSON</label><textarea id="import-json" rows="10" spellcheck="false" placeholder='[{"id":"demo-1","platform":"qq","account":"demo","conversation":"虚构课程通知群","sender":"示例老师","sentAt":"2026-11-15T09:00:00+08:00","text":"请于 2026-11-18 17:00 前提交课程报告。"}]'></textarea><details class="format-help"><summary>查看导入格式</summary><p>每条消息需要 id、platform（wechat / qq / manual）、account、conversation、sender、sentAt（带时区的 ISO 时间）和 text。最多 500 条，每条正文最多 20,000 字符，总请求不超过 2 MiB。可导入数组或 {"messages": [...]}。</p></details><p id="import-error" class="form-error" role="alert" hidden></p><div class="dialog-actions"><button type="button" class="quiet-button dialog-close">取消</button><button type="submit" class="button" id="import-submit">导入并生成建议</button></div></form></dialog>
+  <dialog id="payload-dialog" aria-labelledby="payload-title"><div class="dialog-heading"><div><p class="eyebrow">EXACT HANDOFF PREVIEW</p><h2 id="payload-title">Notion 交接预览</h2></div><button class="icon-button" id="payload-close" aria-label="关闭交接预览">×</button></div><p class="muted">这是本次准备交接的数据。预览不会向 Notion 写入。</p><pre id="payload-content"></pre><div class="dialog-actions"><button class="button" id="payload-done">完成核对</button></div></dialog>
+  <noscript>请启用 JavaScript，以在本机核对消息与批准交接。</noscript>
+</body>
+</html>
